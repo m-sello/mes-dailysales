@@ -1,24 +1,24 @@
 package ls.mestech.erp.dailysales.domain.main.statemachine;
-public class TVOn  implements IStateMachine{
+public class TVMute implements IStateMachine{
     TV tvContext;
-    public TVOn(TV context)
+    public TVMute(TV context)
     {
         this.tvContext = context;
     }
     //Users can press any of these buttons at this state-On, Off or Mute
-//TV is On already, user is pressing On button again
+    //TV is in mute, user is pressing On button
     public void PressOnButton(TV context)
     {
-
+        tvContext.CurrentState = new TVOn(context);
     }
-    //TV is On now, user is pressing Off button
+    //TV is in mute, user is pressing Off button
     public void PressOffButton(TV context)
     {
         tvContext.CurrentState = new TVOff(context);
     }
-    //TV is On now, user is pressing Mute button
+    //TV is in mute already, user is pressing mute button again
     public void PressMuteButton(TV context)
     {
-        tvContext.CurrentState = new TVMute(context);
+
     }
 }
