@@ -1,33 +1,58 @@
 package ls.mestech.erp.dailysales.domain.model;
 
-import jakarta.persistence.*;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 
-@Entity
 @Table(name = "daily_tenders")
 public class DailyTender {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @Column("id")
+    String id;
 
-    @Column(name = "amount")
-    private BigDecimal amount;
+    @Column("amount")
+    BigDecimal amount;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tender_type_tender_type", nullable = false)
-    private TenderType tenderTypeTenderType;
+    @Column("tender_type_cd")
+    private String tenderTypeCd;
+    @Transient
+    DailySales dailySales;
+    @PersistenceCreator
+    public DailyTender(String id, BigDecimal amount, String tenderTypeCd){
+        this.id = id;
+        this.amount = amount;
+        this.tenderTypeCd = tenderTypeCd;
+    }
+    public DailyTender(){
+    }
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "daily_sales_id", nullable = false)
-    private DailySales dailySales;
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
 
-    public Long getId() {
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -39,20 +64,16 @@ public class DailyTender {
         this.amount = amount;
     }
 
-    public TenderType getTenderTypeTenderType() {
-        return tenderTypeTenderType;
+    public String getTenderTypeCd() {
+        return tenderTypeCd;
     }
 
-    public void setTenderTypeTenderType(TenderType tenderTypeTenderType) {
-        this.tenderTypeTenderType = tenderTypeTenderType;
+    public void setTenderTypeCd(String tenderTypeCd) {
+        this.tenderTypeCd = tenderTypeCd;
     }
 
     public DailySales getDailySales() {
         return dailySales;
-    }
-
-    public void setDailySales(DailySales dailySales) {
-        this.dailySales = dailySales;
     }
 
 }

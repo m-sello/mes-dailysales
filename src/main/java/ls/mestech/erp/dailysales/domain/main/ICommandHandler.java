@@ -1,5 +1,10 @@
 package ls.mestech.erp.dailysales.domain.main;
 
-public interface ICommandHandler <TCommand, ResultWithDomainEvent>{
-    ResultWithDomainEvent Handle(TCommand command);
+import jakarta.validation.constraints.NotNull;
+import ls.mestech.erp.dailysales.domain.model.TenderType;
+import org.springframework.stereotype.Service;
+
+@Service
+public interface ICommandHandler <TCommand, TResult>{
+    TResult Handle(@NotNull TCommand command);
 }

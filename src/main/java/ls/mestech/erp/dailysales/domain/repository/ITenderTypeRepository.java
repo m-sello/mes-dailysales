@@ -1,7 +1,9 @@
 package ls.mestech.erp.dailysales.domain.repository;
 
+import ls.mestech.erp.dailysales.domain.model.DailySales;
 import ls.mestech.erp.dailysales.domain.model.TenderType;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ITenderTypeRepository extends JpaRepository <TenderType,Long> {
+@Repository
+public interface ITenderTypeRepository  extends IRepository<TenderType,String> {
 }

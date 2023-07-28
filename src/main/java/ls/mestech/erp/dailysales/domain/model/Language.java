@@ -1,24 +1,53 @@
 package ls.mestech.erp.dailysales.domain.model;
 
-import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.annotation.Version;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
 @Table(name = "language")
 public class Language {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "language_cd", nullable = false, length = 24)
-    private String id;
+    @Column("language_cd")
+    private String languageCd;
 
-    @Column(name = "name")
+    @Column("name")
     private String name;
+    @Version
+    private Integer version;
 
-    public String getId() {
-        return id;
+    public Language() {
     }
 
-    public void setId(String id) {
-        this.id = id;
+    @PersistenceCreator
+    public Language(String languageCd, String name) {
+        this.languageCd = languageCd;
+        this.name = name;
+    }
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+    public String getLanguageCd() {
+        return languageCd;
+    }
+
+    public void setLanguageCd(String languageCd) {
+        this.languageCd = languageCd;
     }
 
     public String getName() {
@@ -28,5 +57,4 @@ public class Language {
     public void setName(String name) {
         this.name = name;
     }
-
 }

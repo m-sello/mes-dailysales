@@ -1,21 +1,42 @@
 package ls.mestech.erp.dailysales.domain.model;
 
-import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.relational.core.mapping.Table;
 
-@Entity
+import java.util.HashSet;
+import java.util.Set;
+
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "username", nullable = false, length = 16)
-    private String id;
+    @Column("username")
+    String id;
 
-    @Column(name = "email")
-    private String email;
+    @Column("email")
+    String email;
+    @MappedCollection
+    Set<UserSecurityGroup> userSecurityGroups = new HashSet<>();
+    @MappedCollection
+    Set<UserLog> userLogs = new HashSet<>();
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_group_user_group_dc", nullable = false)
-    private UserGroup userGroupUserGroupDc;
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 
     public String getId() {
         return id;
@@ -33,12 +54,19 @@ public class User {
         this.email = email;
     }
 
-    public UserGroup getUserGroupUserGroupDc() {
-        return userGroupUserGroupDc;
+    public Set<UserSecurityGroup> getUserGroups() {
+        return userSecurityGroups;
     }
 
-    public void setUserGroupUserGroupDc(UserGroup userGroupUserGroupDc) {
-        this.userGroupUserGroupDc = userGroupUserGroupDc;
+    public void addUserGroups(UserSecurityGroup userGroups) {
+        this.userSecurityGroups.add(userGroups);
     }
 
+    public Set<UserLog> getUserLogs() {
+        return userLogs;
+    }
+
+    public void addUserLogs(UserLog userLogs) {
+        this.userLogs.add(userLogs);
+    }
 }

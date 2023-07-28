@@ -1,43 +1,80 @@
 package ls.mestech.erp.dailysales.domain.model;
 
-import jakarta.persistence.*;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.PersistenceCreator;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Column;
+import org.springframework.data.relational.core.mapping.Table;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
-@Entity
 @Table(name = "daily_sales_log")
 public class DailySalesLog {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @Column("id")
+    private String id;
 
-    @Column(name = "log_dt")
-    private Instant logDt;
+    @Column("log_dt")
+    private LocalDateTime logDt;
 
-    @Column(name = "action", length = 16)
+    @Column("action")
     private String action;
 
-    @Column(name = "description")
+    @Column("description")
     private String description;
+    @Column("username")
+    private String username;
+    @Transient
+    private DailySales dailySales;
+    @PersistenceCreator
+    public DailySalesLog(String id, LocalDateTime logDt, String action, String description, String username){
+        this.id = id;
+        this.logDt = logDt;
+        this.action = action;
+        this.description = description;
+        this.username = username;
+    }
+    public DailySalesLog(){
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "users_username", nullable = false)
-    private User usersUsername;
+    }
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
 
-    public Long getId() {
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Instant getLogDt() {
+    public LocalDateTime getLogDt() {
         return logDt;
     }
 
-    public void setLogDt(Instant logDt) {
+    public void setLogDt(LocalDateTime logDt) {
         this.logDt = logDt;
     }
 
@@ -56,13 +93,8 @@ public class DailySalesLog {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public User getUsersUsername() {
-        return usersUsername;
-    }
-
-    public void setUsersUsername(User usersUsername) {
-        this.usersUsername = usersUsername;
+    public DailySales getDailySales() {
+        return dailySales;
     }
 
 }

@@ -1,7 +1,10 @@
 package ls.mestech.erp.dailysales.domain.repository;
 
+import ls.mestech.erp.dailysales.domain.model.DailySales;
 import ls.mestech.erp.dailysales.domain.model.Language;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-public interface ILanguageRepository extends JpaRepository <Language,Long> {
+@Repository
+public interface ILanguageRepository  extends IRepository<Language,String> {
 }
